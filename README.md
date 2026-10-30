@@ -1,50 +1,36 @@
-# Securosys HSM Auto-Unseal Plugin for OpenBao
+# Securosys KMS Plugin for OpenBao
 
-This project builds a standalone OpenBao KMS plugin for Securosys HSM
-auto-unseal and External Keys. The plugin connects OpenBao to Securosys Primus
-HSM or CloudsHSM through the REST-based TSB interface and serves both the
+This project builds an [OpenBao KMS plugin](https://openbao.org/docs/plugins/) for [Securosys HSM](https://www.securosys.com/).
+The plugin supports both **auto-unsealing** and **External Keys**.
+
+The plugin connects OpenBao to Securosys Primus HSM or CloudHSM through
+the REST-based TSB interface and serves both the
 `wrappers/securosyshsm` wrapper and the `kms/securosyshsm` implementation
 through `github.com/openbao/go-kms-wrapping/plugin/v2`.
 
-The integration lets OpenBao unlock its storage key with HSM-backed security.
+## Documentation
 
-## Table of Contents
+- Securosys documentation: <https://docs.securosys.com/openbao/overview>
+- OpenBao documentation: <https://openbao.org/docs>
 
-- [Glossary](#glossary)
-- [Setup](#setup)
-- [Known limitations](#known-limitations)
-- [Build](#build)
-- [How to run OpenBao](#how-to-run-openbao)
-  - [Auto-unseal with securosys-hsm](#auto-unseal-with-securosys-hsm)
-  - [Self-initialization with HCL files](#self-initialization-with-hcl-files)
-- [Examples with three HCL files](#examples-with-three-hcl-files)
-- [Getting Support](#getting-support)
-- [License](#license)
+## Source code
 
-## Glossary
+The source code of this plugin is spread over multiple places:
 
-| Term      | Description                                                                 |
-| :-------- | :-------------------------------------------------------------------------- |
-| CloudsHSM | HSM as a service, operated by Securosys                                     |
-| HSM       | Hardware Security Module                                                    |
-| JWT       | JSON Web Token, used for bearer-token authorization                         |
-| TSB       | Transaction Security Broker, providing the REST interface to Securosys HSMs |
-| UI        | OpenBao user interface                                                      |
+- [securosys-com/tsb-client-go](https://github.com/securosys-com/tsb-client-go):
+  A Go client library for the TSB REST API.
+- [openbao/go-kms-wrapping](https://github.com/openbao/go-kms-wrapping/tree/main/kms/securosyshsm):
+  The core plugin logic, bridging between the OpenBao plugin API and the TSB Go client.
+- [openbao/openbao-plugins](https://github.com/openbao/openbao-plugins/tree/main/kms/securosys/cmd):
+  A minimal `main.go` that provides an entrypoint to the plugin.
+  **This is the same as this repository.**
 
-## Setup
+## Requirements
 
-Install Go 1.27 or newer before building the plugin.
+The following minimum versions are required:
 
-The project uses the official `github.com/openbao/go-kms-wrapping` modules.
-Securosys wrapper and KMS support is included upstream.
-
-Use [OpenBao v2.7.0](https://github.com/openbao/openbao/releases/tag/v2.7.0)
-or newer to run this plugin. Older OpenBao versions without KMS plugin support
-reject the `plugin "kms"` stanza with:
-
-```text
-"kms" is not a supported plugin type
-```
+- Go 1.27
+- [OpenBao 2.7.0](https://openbao.org/blog/release-v2-7-0/)
 
 ## Known limitations
 
@@ -85,8 +71,8 @@ Optionally, build OpenBao 2.7.0 from an adjacent source checkout:
 ```sh
 cd ../openbao
 git checkout v2.7.0
-go build -o ../securosys-openbao-autounseal-plugin/bao-kms .
-cd ../securosys-openbao-autounseal-plugin
+go build -o ../securosys-openbao-kms-plugin/bao-kms .
+cd ../securosys-openbao-kms-plugin
 ```
 
 ## How to run OpenBao
