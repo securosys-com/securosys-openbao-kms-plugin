@@ -26,7 +26,7 @@ mirror:
     - sha256sum build/openbao-plugin-securosyshsm > build/openbao-plugin-securosyshsm.sha256
     - git fetch --tags origin
     - git remote remove github || true
-    - git remote add github "https://x-access-token:${GH_TOKEN}@github.com/securosys-com/securosys-openbao-autounseal-plugin.git"
+    - git remote add github "https://x-access-token:${GH_TOKEN}@github.com/securosys-com/securosys-openbao-kms-plugin.git"
     - git push github refs/remotes/origin/main:refs/heads/main --force
   artifacts:
     paths:
@@ -45,7 +45,7 @@ mirror_tag:
     - sha256sum build/openbao-plugin-securosyshsm > build/openbao-plugin-securosyshsm.sha256
     - git fetch --tags origin
     - git remote remove github || true
-    - git remote add github "https://x-access-token:${GH_TOKEN}@github.com/securosys-com/securosys-openbao-autounseal-plugin.git"
+    - git remote add github "https://x-access-token:${GH_TOKEN}@github.com/securosys-com/securosys-openbao-kms-plugin.git"
     - git push github "refs/tags/${CI_COMMIT_TAG}:refs/tags/${CI_COMMIT_TAG}"
   artifacts:
     paths:
